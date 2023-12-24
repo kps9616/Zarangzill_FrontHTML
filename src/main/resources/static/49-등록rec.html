@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">    
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    
+    <link rel="stylesheet" type="text/css"  href="css/uikit.css" >
+    <link rel="stylesheet" type="text/css"  href="css/reset.css" >    
+    <link rel="stylesheet" type="text/css"  href="css/style.css" >
+    <link rel="stylesheet" type="text/css"  href="css/video.css" >
+    <script src="js/uikit.js"></script>
+    <script src="js/uikit-icons.js"></script>
+
+    <script src="js/jquery.min.js"></script>
+    <title>녹화</title>
+    <style>
+       .body-bg{background-image:url(images/thum/thum01.jpg); background-position: top;background-size: cover; background-repeat: no-repeat;}
+
+      
+    </style>
+</head>
+<body class="body-bg">
+
+
+    <div class="v_progress_bx">
+        
+        
+        <div class="v_progress_control">
+            <a href="#" class="v-del"><span uk-icon="icon: close;"></span></a>
+            <a href="#none" class="v-bt-round">완료</a>
+            <a href="#none" class="v-bt-round">X</a>
+       </div>
+    </div>
+
+    <div class="rec-bx">       
+        <a href="#"><span uk-icon="icon:light;ratio:0.7"></span></a>
+        <a href="#"><span uk-icon="icon:self;ratio:0.8"></span></a>
+        <a href="#" class="mt20"><span class="v-rec-tiemer">30</span></a>
+    </div>
+
+    <div class="v_rec_bottom">
+        <a href="#" class="v-back-icon"><span uk-icon="icon:vfolder;ratio:0.7"></span>업로드</a>        
+            <div class="recbtn-bx">
+                <div onclick="toggleRecording()" id="record-button" class="rec-button"></div>
+                <div class="text-center" id="app"></div>
+            </div>
+            <a href="#none" class="sound-add"><span uk-icon="icon: side06;ratio:0.8"></span>사운드 추가</a>
+    </div>
+   
+    <script>
+        let isRecording = false;
+      
+        function toggleRecording() {
+          const recordButton = document.getElementById("record-button");
+          const circleProgress = document.querySelector(".circle-progress");
+      
+          if (!isRecording) {
+            isRecording = true;
+            recordButton.classList.add("active");
+            circleProgress.classList.add("rec-animate");
+          } else {
+            isRecording = false;
+            recordButton.classList.remove("active");
+            circleProgress.classList.remove("rec-animate");
+            circleProgress.style.strokeDashoffset = circleProgress.getTotalLength();
+          }
+        }
+      
+      //원형 프로그래스바
+        document.addEventListener('DOMContentLoaded', function () {
+          const app = document.getElementById('app');
+      
+          const sqSize = 60;
+          const strokeWidth = 8;
+          const radius = (sqSize - strokeWidth) / 2;
+          const viewBox = `0 0 ${sqSize} ${sqSize}`;
+          const dashArray = radius * Math.PI * 2;
+      
+          app.innerHTML = `
+              <svg width="${sqSize}" height="${sqSize}" viewBox="${viewBox}">
+                  <circle class="circle-background" cx="${sqSize / 2}" cy="${sqSize / 2}" r="${radius}" strokeWidth="${strokeWidth}px" />
+                  <circle class="circle-progress" cx="${sqSize / 2}" cy="${sqSize / 2}" r="${radius}" strokeWidth="${strokeWidth}px"
+                      transform="rotate(-90 ${sqSize / 2} ${sqSize / 2})" style="stroke-dasharray: ${dashArray}; stroke-dashoffset: ${dashArray}" />
+              </svg>
+          `;
+        });
+      </script>
+
+
+   </div>
+</body>
+</html>

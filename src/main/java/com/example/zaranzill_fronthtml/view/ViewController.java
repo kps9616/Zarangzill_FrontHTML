@@ -18,7 +18,7 @@ public class ViewController {
         ModelAndView mav = new ModelAndView();
 
         logger.info("hello");
-        mav.setViewName("main");
+        mav.setViewName("test");
         mav.addObject("title","메인입니다.");
         return mav;
     }

@@ -5,6 +5,7 @@ function fn_get(form,apiUrl) {
         data: $("#"+form).serialize(),
         success: function(response) {
             console.log(response);
+            return response;
         },
         error: function(error) {
             console.log(error);

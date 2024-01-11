@@ -15,6 +15,7 @@
     <script src="js/uikit.js"></script>
     <script src="js/uikit-icons.js"></script>
     <script src="js/script.js"></script>
+    <script src="js/ajax.js"></script>
     <title>비디오 레이아웃</title>
 </head>
 
@@ -141,6 +142,7 @@
 
         if(isVideoChange) {
             videoSource.setAttribute("src", videoList[videoIndex]);
+            $("#judge_video_id").val(videoIndex);
             videoElement.load();
             videoElement.play();
         }
@@ -337,6 +339,14 @@
     <!-- 심사하기 -->
     <div id="bottom-modal-judge" class="bmodal">
 
+        <form id="judgeScoreForm" name="judgeScoreForm" method="post">
+            <input type="hidden" id="score_judgeHeap" name="score_judgeHeap">
+            <input type="hidden" id="score_judgeIndividuality" name="score_judgeIndividuality">
+            <input type="hidden" id="score_judgeCuteness" name="score_judgeCuteness">
+            <input type="hidden" id="judge_user_id" name="judge_user_id" value="1">
+            <input type="hidden" id="judge_video_id" name="judge_video_id" value="1">
+        </form>
+
         <!-- Modal content -->
         <div class="bottom-modal top-radius">
 
@@ -376,7 +386,7 @@
                         <label>힙</label>
                         <div class="range-width">
                             <em class="line" style="left: 36%;"></em><em class="line" style="left: 66.6%;"></em>
-                            <input type="range" max="300" value="0" oninput="adjust('heap')">
+                            <input type="range" max="300" value="0" id="judgeHeap" oninput="adjust('heap')">
                         </div>
 
                         <span class="sr-only">0%</span>
@@ -388,7 +398,7 @@
                         <label>개성</label>
                         <div class="range-width">
                             <em class="line" style="left: 33.3%;"></em><em class="line" style="left: 66.6%;"></em>
-                            <input type="range" max="300" value="0" oninput="adjust('individuality')">
+                            <input type="range" max="300" value="0" id="judgeIndividuality" oninput="adjust('individuality')">
                         </div>
                         <span class="sr-only">0%</span>
                         <button onclick="adjustValue('individuality', -1)" uk-icon="icon:  minus-circle;ratio: 1.5"></button>
@@ -399,7 +409,7 @@
                         <label>귀여움</label>
                         <div class="range-width">
                             <em class="line" style="left: 33.3%;"></em><em class="line" style="left: 66.6%;"></em>
-                            <input type="range" max="300" value="0" oninput="adjust('cuteness')">
+                            <input type="range" max="300" value="0" id="judgeCuteness" oninput="adjust('cuteness')">
                         </div>
 
                         <span class="sr-only">0%</span>
@@ -410,14 +420,19 @@
 
             </div>
             <div class="container mt20 pb30">
-                <button type="button" class="bt_gradient w100">제출</button>
+                <button type="button" class="bt_gradient w100" onclick="updateJudgeScore();">제출</button>
             </div>
 
         </div>
     </div>
 
     <div id="bottom-modal-winner" class="bmodal">
+        <form id="winnerCalForm" name="winnerCalForm" method="post">
+            <input type="hidden" id="winner_user_id" name="winner_user_id" value="1">
+            <input type="hidden" id="winner_video_id" name="winner_video_id" value="1">
+            <input type="hidden" id="winner_cal_type" name="winner_cal_type" value="1">
 
+        </form>
         <!-- Modal content -->
         <div class="bottom-modal top-radius"  style="height: auto;">
 
@@ -435,14 +450,14 @@
                 <!--투표버튼-->
                 <div class="mod-team-btnbx">
                     <div class="mod-btn-black">
-                        <h3 class="mb10">8월 우승</h3>
-                        <a href="#">
+                        <h3 class="mb10">1월 우승</h3>
+                        <a href="#" onclick="updateWinnerPredict('month');">
                             <div><em uk-icon="icon: vote-check;"></em><span>투표완료</span></div>
                         </a>
                     </div>
                     <div class="mod-btn-blue">
                         <h3 class="mb10">30번째 우승</h3>
-                        <a href="#">
+                        <a href="#" onclick="updateWinnerPredict('week');">
                             <div><em uk-icon="icon: vote-ok;"></em><span>투표하기</span></div>
                             <span class="font11">7월 25일 ~ 7월 29일</span>
                         </a>
@@ -594,7 +609,25 @@
             });
             const emValue = Math.round((sum / totalPercentage) * maxVirtualValue);
             emElement.textContent = emValue;
+
+
         }
+
+        function updateJudgeScore() {
+            const emElement = document.querySelector('.score em');
+            let sum = 0;
+            document.querySelectorAll('input[type="range"]').forEach(input => {
+                $("#score_"+input.id).val(Math.round((input.value / totalPercentage) * maxVirtualValue));
+            });
+            fn_post("judgeScoreForm","judge/insert");
+        }
+
+        function updateWinnerPredict(type) {
+            $("#winner_cal_type").val(type);
+
+            fn_post("winnerCalForm","win/"+type+"/list");
+        }
+
 
 
 

@@ -29,13 +29,13 @@
 
     $( document ).ready(function() {
         $.ajax({
-            url: 'http://1.226.83.35:9090/api/v1/win/month/list',
+            url: 'http://1.226.83.35:9090/api/v1/win/week/list',
             method: 'GET',
             dataType: 'json',
             data: $("#winPredForm").serialize(),
             success: function(response) {
-                var winPredMList = response.winPredMList;
-                console.log(winPredMList);
+                var winPredWList = response.winPredWList;
+                console.log(winPredWList);
                 var html = "";
 
                 html += '<li class="rank-adv">';
@@ -49,9 +49,9 @@
                 html += '    </div>';
                 html += '</li>';
 
-                for(var i = 0; i < winPredMList.length; i++) {
-                    var winPredInfo = winPredMList[i];
-                    console.log(winPredInfo);
+
+                for(var i = 0; i < winPredWList.length; i++) {
+                    var winPredInfo = winPredWList[i];
                     html += '<li>';
                     html += '    <div class="rankno tac">'+(i+1)+'</div>';
                     html += '    <div class="rankimg"><a href="107쇼츠.html"><img src="images/thum/thum0'+(i+1)+'.jpg"></a></div>';
@@ -66,7 +66,7 @@
                     html += '</li>';
                 }
 
-                $("#monthWinList").html(html);
+                $("#weekWinlist").html(html);
             },
             error: function(error) {
                 console.log(error);
@@ -79,24 +79,31 @@
 </script>
 <body>
 
-<form id="winPredForm" name="winPredForm" method="post">
-    <input type="hidden" id="userId" name="userId" value="1"/>
-    <input type="hidden" id="predictionType" name="predictionType" value="M"/>
-    <input type="hidden" id="startDate" name="startDate" value="20240101"/>
-    <input type="hidden" id="endDate" name="endDate" value="20240131"/>
-</form>
+    <form id="winPredForm" name="winPredForm" method="post">
+        <input type="hidden" id="userId" name="userId" value="1"/>
+        <input type="hidden" id="predictionType" name="predictionType" value="W"/>
+        <input type="hidden" id="startDate" name="startDate" value="20240107"/>
+        <input type="hidden" id="endDate" name="endDate" value="20240113"/>
+    </form>
     <div class="container">
         <div class="tab-2th">
-            <a href="/monthWinner" class="mleft on">월 우승</a><a href="/weekWinner" class="mright">주 우승</a>
+            <a href="/monthWinner" class="mleft">월 우승</a><a href="/weekWinner" class="mright on">주 우승</a>
         </div>
 
         <div class="data-nav">
             <a href="#" title="이전"><em uk-icon="icon: chevron-left; ratio: 1.2"></em></a>
-            <h3>${year}. ${month}월 <span>진행중</span></h3>
+            <h3>2024. 1월 <span>(2024.01.07 ~ 2023.01.13)</span></h3>
             <a href="#" title="다음" class="nav-disable"><em uk-icon="icon: chevron-right; ratio: 1.2"></em></a>
         </div>
 
-  
+        <!--
+        <div class="top-search mt10">
+            <div class="uk-inline">
+                <a class="uk-form-icon uk-form-icon-flip" href="#" uk-icon="icon: search"></a>
+                <input class="uk-input" type="text" aria-label="Clickable icon">
+            </div>
+        </div>
+        -->
 
         <div class="all-rank-list">
             <div class="all-rank-tit">
@@ -105,35 +112,39 @@
                 <span>우찜</span>
             </div>
 
-            <ul class="mt5" id="monthWinList">
+            <ul class="mt5"  id="weekWinlist">
                 <!--
                 <li class="rank-adv">
-                    <span class="rank-adv-icon">광고</span>
-                    <div class="rankimg"><a href="46-2광고.html"><img src="images/thum/thum-cu.jpg"></a></div>
-                    <div class="rankinfo">
-                        <div class="rankinfo-tit ellipsis2"><a href="46-2광고.html">CU편의점 고인물 편 ♡♡♡편의점 알바이야기 연속 보기</a></div>
-                        <div class="c_gray ellipsis">#편의점 #CU편의점 알바이야기 #CU편의점</div>
-                        <div class="c_gray font11 mb5">2023.01.02</div>
-                        <div class="rankinfo-name"><a href="#none">CU편의점</a></div>
-                    </div>
+
+                        <span class="rank-adv-icon">광고</span>
+                        <div class="rankimg"><a href="#none"><img src="images/thum/thum-cu.jpg"></a></div>
+                        <div class="rankinfo">
+                            <div class="rankinfo-tit ellipsis2"><a href="#none">CU편의점 고인물 편 ♡♡♡편의점 알바이야기 연속 보기</a></div>
+                            <div class="c_gray ellipsis">#편의점 #CU편의점 알바이야기 #CU편의점</div>
+                            <div class="c_gray font11 mb5">2023.01.02</div>
+                            <div class="rankinfo-name"><a href="#none">CU편의점</a></div>
+                        </div>
+
+
                 </li>
                 <li>
                         <div class="rankno tac">1</div>
-                        <div class="rankimg"><a href="107쇼츠.html"><img src="images/thum/thum01.jpg"></a></div>
+                        <div class="rankimg"><a href="#none"><img src="images/thum/thum01.jpg"></a></div>
                         <div class="rankinfo">
-                            <div class="rankinfo-tit ellipsis2"><a href="107쇼츠.html">완벽한 아이돌 압구정동 아이돌 제의 뉴진스제의 뉴진스제의 뉴진스</a></div>
+                            <div class="rankinfo-tit ellipsis2"><a href="#none">완벽한 아이돌 압구정동 아이돌 제의 뉴진스제의 뉴진스제의 뉴진스</a></div>
                             <div class="c_gray ellipsis">#뉴진스돌 #아이돌 #압구정 아이돌 #뉴진스돌 #아이돌 #압구정 아이돌</div>
                             <div class="c_gray font11 mb5">2023.01.02</div>
                             <div class="rankinfo-name"><a href="#none">Newjeans</a></div>
                         </div>
                         <div class="c_gray wp60 tac font12">2485</div>
                         <div class="c_gray wp60 tac font12">72</div>
+                    </a>
                 </li>
                 <li>
                         <div class="rankno wp40 tac">2</div>
-                        <div class="rankimg"><a href="107쇼츠.html"><img src="images/thum/thum02.jpg"></a></div>
+                        <div class="rankimg"><a href="#none"><img src="images/thum/thum02.jpg"></a></div>
                         <div class="rankinfo">
-                            <div class="rankinfo-tit ellipsis2"><a href="107쇼츠.html">완벽한 아이돌 압구정동 아이돌 제의 뉴진스제의 뉴진스제의 뉴진스</a></div>
+                            <div class="rankinfo-tit ellipsis2"><a href="#none">완벽한 아이돌 압구정동 아이돌 제의 뉴진스제의 뉴진스제의 뉴진스</a></div>
                             <div class="c_gray ellipsis">#뉴진스돌 #아이돌 #압구정 아이돌 #뉴진스돌 #아이돌 #압구정 아이돌</div>
                             <div class="c_gray font11 mb5">2023.01.02</div>
                             <div class="rankinfo-name"><a href="#none">Newjeans</a></div>
@@ -180,8 +191,7 @@
 
     
 
-    <!--하단메뉴-->
-    <!--
+    <!--하단메뉴
     <div class="full-bottom-bar">
         <div class="v_bottom_nav">                
             <ul>

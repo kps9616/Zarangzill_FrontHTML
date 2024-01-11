@@ -1,3 +1,4 @@
+<%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -26,43 +27,57 @@
 
 
     $( document ).ready(function() {
-        var response = fn_get("channelForm","channel/fans/list");
+        var response;
+        $.ajax({
+            url: 'http://1.226.83.35:9090/api/v1/channel/fans/list',
+            method: 'GET',
+            dataType: 'json',
+            data: $("#channelForm").serialize(),
+            success: function(response) {
+                console.log(response);
+                var recomList = response.recomList;
+                var recomListSize = response.recomListSize;
+                var userChanList = response.channelList;
+                var userChanListSize = response.channelListSize;
 
-        var recomList = JSON.parse(response.recomList);
+                var html = "";
+                for(var i = 0; i < recomListSize; i++) {
+                    var recChannelInfo = recomList[i];
+                    console.log(recChannelInfo);
+                    html += '<div class="swiper-slide">';
+                    html += '  <div class="swp-img" title="비디오 썸네일" style="background-image: url(\'images/thum/thum0'+(i+1)+'.jpg\');"></div> ';
+                    html += '      <div class="swp-info">';
+                    html += '          <a href="#">';
+                    html += '             <img src="images/thum/face0'+(i+1)+'.jpg">';
+                    html += '                  <span>'+recChannelInfo.userName+'</span>';
+                    html += '          </a>';
+                    html += '          <div class="swp-txt ellipsis2">';
+                    html += '              '+recChannelInfo.channelDescription+'';
+                    html += '          </div>';
+                    html += '      </div>';
+                    html += '  </div>';
+                }
 
-        var userChanList = JSON.parse(response.channelList);
+                $("#recomChanList").html(html);
+                html = "";
 
-        var html = "";
-        for(var i = 0; i < recomList.length; i++) {
-            var recChannelInfo = JSON.parse(recomList(i));
-            html += '<div className="swiper-slide">';
-            html += '  <div className="swp-img" title="비디오 썸네일" style="background-image: url(images/thum/thum0'+i+'.jpg);"></div> ';
-            html += '      <div className="swp-info">';
-            html += '          <a href="#">';
-            html += '             <img src="images/thum/face0'+i+'.jpg">';
-            html += '                  <span>'+recChannelInfo.user_name+'</span>';
-            html += '          </a>';
-            html += '          <div className="swp-txt ellipsis2">';
-            html += '              '+recChannelInfo.channel_description+'';
-            html += '          </div>';
-            html += '      </div>';
-            html += '  </div>';
-        }
+                for(var i = 0; i < userChanListSize; i++) {
+                    var userChannelInfo = userChanList[i];
+                    html += '   <li>';
+                    html += '      <a href="#none">';
+                    html += '          <img src="images/thum/face0'+(i+1)+'.jpg">';
+                    html += '              <div>'+userChannelInfo.channelName+' <span>'+userChannelInfo.channelDescription+'</span></div>';
+                    html += '      </a>';
+                    html += '       <button type="button" class="bt_subscribe_blue" onclick="fnUpdateUserFanStat(this,\"'+userChannelInfo.channelId+'\",'+userChannelInfo.userId+'\");">팬</button>';
+                    html += '   </li>';
+                }
+                $("#userChanList").html(html);
+            },
+            error: function(error) {
+                console.log(error);
+            }
+        });
 
-        $("#recomChanList").html(html);
-        html = "";
-
-        for(var i = 0; i < userChanList.length; i++) {
-            var userChannelInfo = JSON.parse(userChanList(i));
-            html += '   <li>';
-            html += '      <a href="#none">';
-            html += '          <img src="images/thum/face0'+i+'.jpg">';
-            html += '              <div>'+userChannelInfo.channel_name+' <span>'+userChannelInfo.channel_description+'</span></div>';
-            html += '      </a>';
-            html += '       <button type="button" class="bt_subscribe_blue" onclick="fnUpdateUserFanStat(this,\"'+userChannelInfo.channel_id+'\",'+userChannelInfo.user_id+'\");">팬</button>';
-            html += '   </li>';
-        }
-        $("#userChanList").html(html);
     });
 
     function fnUpdateUserFanStat(btn,channel_id,user_id) {

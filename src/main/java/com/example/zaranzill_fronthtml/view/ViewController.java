@@ -36,5 +36,17 @@ public class ViewController {
         mav.addObject("month",now.getMonthValue());
         return mav;
     }
+    @GetMapping("weekWinner")
+    public ModelAndView weekWinner(Model model) {
+        ModelAndView mav = new ModelAndView();
+        LocalDate now = LocalDate.now();
+
+
+        logger.info("hello");
+        mav.setViewName("weekWinner");
+        mav.addObject("year",now.getYear());
+        mav.addObject("month",now.getMonthValue());
+        return mav;
+    }
 
 }

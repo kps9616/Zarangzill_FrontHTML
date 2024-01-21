@@ -25,7 +25,8 @@
 </head>
 
 <script>
-
+    const nowYear = "${year}";
+    const nowMonth = "${month}";
 
     $( document ).ready(function() {
         $.ajax({
@@ -75,9 +76,22 @@
 
     });
 
+    function fn_beforeList() {
+        $("#dType").val("before");
+
+        const mForm = $("#monthForm");
+        mForm.submit();
+    }
+
 
 </script>
 <body>
+<form id="monthForm" name="monthForm" method="get" action = "/monthWinnerList">
+    <input type="hidden" id="sYear" name="sYear" value="${year}"/>
+    <input type="hidden" id="sMonth" name="sMonth" value="${month}"/>
+    <input type="hidden" id="dType" name="dType" value=""/>
+
+</form>
 
 <form id="winPredForm" name="winPredForm" method="post">
     <input type="hidden" id="userId" name="userId" value="1"/>
@@ -91,7 +105,7 @@
         </div>
 
         <div class="data-nav">
-            <a href="#" title="이전"><em uk-icon="icon: chevron-left; ratio: 1.2"></em></a>
+            <a href="#" title="이전" onclick="fn_beforeList()"><em uk-icon="icon: chevron-left; ratio: 1.2"></em></a>
             <h3>${year}. ${month}월 <span>진행중</span></h3>
             <a href="#" title="다음" class="nav-disable"><em uk-icon="icon: chevron-right; ratio: 1.2"></em></a>
         </div>

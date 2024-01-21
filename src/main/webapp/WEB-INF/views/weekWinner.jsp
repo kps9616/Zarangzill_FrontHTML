@@ -28,6 +28,7 @@
 
 
     $( document ).ready(function() {
+        fn_setWeekOfDay();
         $.ajax({
             url: 'http://1.226.83.35:9090/api/v1/win/week/list',
             method: 'GET',
@@ -75,9 +76,75 @@
 
     });
 
+    function fn_setWeekOfDay() {
+        var nowDate = new Date();
+        var settingDate = new Date();
+        var day = nowDate.getDate();
+        var dayOfWeek = nowDate.getDay();
+        var firstDayTex = "";
+        var lastDayTex = "";
+
+        if(dayOfWeek == 0) {
+            var firstDay = new Date(settingDate.setDate(day-6));
+            firstDayTex = firstDay.getFullYear() + "." + ((firstDay.getMonth()+1) > 9 ? (firstDay.getMonth()+1) : "0" + (firstDay.getMonth()+1)) + "." + firstDay.getDate();
+            lastDayTex =  nowDate.getFullYear() + "." + ((nowDate.getMonth()+1)  > 9 ? (nowDate.getMonth()+1) : "0" + (nowDate.getMonth()+1)) + "." + nowDate.getDate();
+        }
+        else if(dayOfWeek == 1) {
+            var lastDay = new Date(settingDate.setDate(day+6));
+            firstDayTex = nowDate.getFullYear() + "." + ((nowDate.getMonth()+1)  > 9 ? (nowDate.getMonth()+1) : "0" + (nowDate.getMonth()+1)) + "." + nowDate.getDate();
+            lastDayTex =  lastDay.getFullYear() + "." + ((lastDay.getMonth()+1) > 9 ? (lastDay.getMonth()+1) : "0" + (lastDay.getMonth()+1)) + "." + lastDay.getDate();
+        }
+        else if(dayOfWeek == 2) {
+            var firstDay = new Date(settingDate.setDate(day-1));
+            var lastDay = new Date(settingDate.setDate(day+5));
+            firstDayTex = firstDay.getFullYear() + "." + ((firstDay.getMonth()+1) > 9 ? (firstDay.getMonth()+1) : "0" + (firstDay.getMonth()+1)) + "." + firstDay.getDate();
+            lastDayTex =  lastDay.getFullYear() + "." + ((lastDay.getMonth()+1) > 9 ? (lastDay.getMonth()+1) : "0" + (lastDay.getMonth()+1)) + "." + lastDay.getDate();
+        }
+        else if(dayOfWeek == 3) {
+            var firstDay = new Date(settingDate.setDate(day-2));
+            var lastDay = new Date(settingDate.setDate(day+4));
+            firstDayTex = firstDay.getFullYear() + "." + ((firstDay.getMonth()+1) > 9 ? (firstDay.getMonth()+1) : "0" + (firstDay.getMonth()+1)) + "." + firstDay.getDate();
+            lastDayTex =  lastDay.getFullYear() + "." + ((lastDay.getMonth()+1) > 9 ? (lastDay.getMonth()+1) : "0" + (lastDay.getMonth()+1)) + "." + lastDay.getDate();
+        }
+        else if(dayOfWeek == 4) {
+            var firstDay = new Date(settingDate.setDate(day-3));
+            var lastDay = new Date(settingDate.setDate(day+3));
+            firstDayTex = firstDay.getFullYear() + "." + ((firstDay.getMonth()+1) > 9 ? (firstDay.getMonth()+1) : "0" + (firstDay.getMonth()+1)) + "." + firstDay.getDate();
+            lastDayTex =  lastDay.getFullYear() + "." + ((lastDay.getMonth()+1) > 9 ? (lastDay.getMonth()+1) : "0" + (lastDay.getMonth()+1)) + "." + lastDay.getDate();
+        }
+        else if(dayOfWeek == 5) {
+            var firstDay = new Date(settingDate.setDate(day-4));
+            var lastDay = new Date(settingDate.setDate(day+2));
+            firstDayTex = firstDay.getFullYear() + "." + ((firstDay.getMonth()+1) > 9 ? (firstDay.getMonth()+1) : "0" + (firstDay.getMonth()+1)) + "." + firstDay.getDate();
+            lastDayTex =  lastDay.getFullYear() + "." + ((lastDay.getMonth()+1) > 9 ? (lastDay.getMonth()+1) : "0" + (lastDay.getMonth()+1)) + "." + lastDay.getDate();
+        }
+        else if(dayOfWeek == 6) {
+            var firstDay = new Date(settingDate.setDate(day-5));
+            var lastDay = new Date(settingDate.setDate(day+1));
+            firstDayTex = firstDay.getFullYear() + "." + ((firstDay.getMonth()+1) > 9 ? (firstDay.getMonth()+1) : "0" + (firstDay.getMonth()+1)) + "." + firstDay.getDate();
+            lastDayTex =  lastDay.getFullYear() + "." + ((lastDay.getMonth()+1) > 9 ? (lastDay.getMonth()+1) : "0" + (lastDay.getMonth()+1)) + "." + lastDay.getDate();
+        }
+
+        var html = "(" + firstDayTex + " ~ " + lastDayTex + ")";
+        $("#weekOfDay").html(html);
+    }
+
+    function fn_beforeList() {
+        $("#dType").val("before");
+
+        const wForm = $("#weekForm");
+        wForm.submit();
+    }
+
 
 </script>
 <body>
+
+    <form id="weekForm" name="weekForm" method="get" action = "/weekWinnerList">
+        <input type="hidden" id="sYear" name="sYear" value="${year}"/>
+        <input type="hidden" id="dType" name="dType" value=""/>
+        <input type="hidden" id="isEnd" name="isEnd" value="D"/>
+    </form>
 
     <form id="winPredForm" name="winPredForm" method="post">
         <input type="hidden" id="userId" name="userId" value="1"/>
@@ -91,8 +158,8 @@
         </div>
 
         <div class="data-nav">
-            <a href="#" title="이전"><em uk-icon="icon: chevron-left; ratio: 1.2"></em></a>
-            <h3>2024. 1월 <span>(2024.01.07 ~ 2023.01.13)</span></h3>
+            <a href="#" title="이전" onclick="fn_beforeList()"><em uk-icon="icon: chevron-left; ratio: 1.2"></em></a>
+            <h3>${year}. ${month}월 <span id="weekOfDay"></span></h3>
             <a href="#" title="다음" class="nav-disable"><em uk-icon="icon: chevron-right; ratio: 1.2"></em></a>
         </div>
 
